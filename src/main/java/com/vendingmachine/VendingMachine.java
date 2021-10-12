@@ -29,17 +29,17 @@ class VendingMachine{
     public VendingMachine() throws IOException{
         record = new File("Transactions.txt");
         i = new File("vendingmachine/input.json");
-        readInput();
-        setRowsAndColumns();
-        setMachine();
-        action();
+        //readInput();
+        //setRowsAndColumns();
+        //setMachine();
+        mainMenu();
     }
 public static void main (String[] args) throws IOException{
     VendingMachine vm = new VendingMachine();
-    vm.action();
+    vm.mainMenu();
 }
 
-private void action() throws IOException{
+private void mainMenu() throws IOException{
     try {
         fw = new FileWriter(record);
     } catch (IOException e) {
@@ -74,7 +74,7 @@ private void action() throws IOException{
  /**
      * readInput Takes input file and sends it into a StringBuffer for creating VendingSnacks.
      */
-private void readInput(){
+/*private void readInput(){
     try{
         char[] c = new char[10000];
         fr = new FileReader(i);
@@ -93,7 +93,7 @@ private void readInput(){
 catch (IOException e) {
     System.out.println("Error with FileReader");
         }
-}
+} */
 
 
  /**
