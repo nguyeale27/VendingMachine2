@@ -1,3 +1,4 @@
+package com.vendingmachine;
 /**
  * VendingSnack is used to represent the snacks in VendingMachine
  */
