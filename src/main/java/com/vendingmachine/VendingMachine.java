@@ -6,6 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /**
  * VendingMachine represents the main program that simulates the functions of a vending machine.
  * 
@@ -20,23 +24,29 @@ class VendingMachine{
     FileWriter fw;
     FileReader fr;
     StringBuffer sb;
+    JSONObject jo;
+    JSONParser jp;
     int totalRows, totalColumns;
     int currentRow, currentColumn;
     /**
      * Constructor for VendingMachine
      * @throws IOException
+     * @throws ParseException
      */
-    public VendingMachine() throws IOException{
+    public VendingMachine() throws IOException, ParseException{
         record = new File("Transactions.txt");
-        i = new File("vendingmachine/input.json");
+        fr = new FileReader("src/Input/input.json");
+        jp = new JSONParser();
+        
+        System.out.println(jp.parse(fr));
         //readInput();
         //setRowsAndColumns();
         //setMachine();
-        mainMenu();
+        //mainMenu();
     }
-public static void main (String[] args) throws IOException{
+public static void main (String[] args) throws IOException, ParseException{
     VendingMachine vm = new VendingMachine();
-    vm.mainMenu();
+    //vm.mainMenu();
 }
 
 private void mainMenu() throws IOException{

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 /**
@@ -19,7 +20,7 @@ public class AppTest
     {
         assertTrue( true );
     }
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException, ParseException{
         VendingMachine vm = new VendingMachine();
         
     }
