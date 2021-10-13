@@ -1,6 +1,7 @@
 package com.vendingmachine;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,14 +36,7 @@ class VendingMachine{
      */
     public VendingMachine() throws IOException, ParseException{
         record = new File("Transactions.txt");
-        fr = new FileReader("src/Input/input.json");
-        jp = new JSONParser();
-        
-        System.out.println(jp.parse(fr));
-        //readInput();
-        //setRowsAndColumns();
-        //setMachine();
-        //mainMenu();
+        readInput();
     }
 public static void main (String[] args) throws IOException, ParseException{
     VendingMachine vm = new VendingMachine();
@@ -83,27 +77,23 @@ private void mainMenu() throws IOException{
 }
  /**
      * readInput Takes input file and sends it into a StringBuffer for creating VendingSnacks.
+ * @throws ParseException
+ * @throws IOException
      */
-/*private void readInput(){
-    try{
-        char[] c = new char[10000];
-        fr = new FileReader(i);
-        fr.read(c);
-        fr.close();
-        sb = new StringBuffer();
-        sb.append(c);
-        sb.trimToSize();
-        for(int x = 0; x <sb.length(); x++){ //Takes out all of the quotation marks to trim the input
-            Character ch = sb.charAt(x);
-             if(ch.equals('"') == true){
-                sb.setCharAt(x, ' ');
-                                        }
-                                            }
+private void readInput() throws IOException, ParseException{
+    fr = new FileReader("src/Input/input.json");
+    JSONObject config;
+    int rows;
+    int columns;
+        jp = new JSONParser();
+        jo = (JSONObject) jp.parse(fr);
+        if(jo.containsKey("config") == true){
+            config = (JSONObject) jo.get("config");
+            rows = (int) (config.get("rows"));
+            columns = (int) (config.get("columns"));
         }
-catch (IOException e) {
-    System.out.println("Error with FileReader");
-        }
-} */
+        
+}
 
 
  /**
