@@ -108,7 +108,6 @@ private void readInput() throws IOException, ParseException{
      * setMachine creates VendingSnack objects from the given input
      */
 private void setMachine(JSONArray ja){
-    boolean b = false;
     String name;
     double price;
     int amount;
@@ -117,14 +116,7 @@ private void setMachine(JSONArray ja){
         name = jso.get("name").toString();
         price = Double.parseDouble(jso.get("price").toString().replace("$", ""));
         amount = Integer.parseInt(jso.get("amount").toString());
-            if(currentColumn >= totalColumns-1) //Program goes through columns first before moving on to the next row
-            {
-                currentColumn = 0;
-                currentRow++;
-            }
-            else{
-                currentColumn++;
-            }
+        setSnack(name, price, amount, currentRow, currentColumn);
         }
     }
 /**
@@ -152,55 +144,9 @@ private void setRowLetters(int numRows){
      * @param r the selected row of the vending machine
      * @param c the selected column of the vending machine
      */
-private void setSnack(String[] properties, int r, int c){
-    String name = "";
-    int amount = 0;
-    double price = 0;
-    for (String s : properties) {
-        
-        if(s.contains("name") == true){
-            s = s.replaceAll("name", ""); //Trimming the string to get only the needed value for name
-            s = s.replace(':', ' '); s = s.replace(',', ' ');
-            s = s.replace('"', ' '); s = s.trim();
+private void setSnack(String n, double p, int a, int r, int c){
 
-            name = s;
-        }
-        else if(s.contains("amount") == true){
-            s = s.replaceAll("amount", "");
-            s = s.replace(':', ' '); s = s.replace(',', ' ');
-            s = s.replace('"', ' '); s = s.trim();
-
-            amount = Integer.parseInt(s);
-        }
-        else if(s.contains("price") == true){
-            s = s.replaceAll("price", "");
-            s = s.replace(':', ' '); s = s.replace(',', ' ');
-            s = s.replace('"', ' ');s = s.replace('$', ' '); s = s.trim();
-
-            price = Double.parseDouble(s);
-        }
-    }
-    inventory[r][c] = new VendingSnack(name, amount, price);
-}
-/**
- * SelectSnack Gives the user a prompt to add a snack
- * 
- */
-private void addSnack(){
-    char c = 'A';
-    c += currentRow;
-    String[] snack = new String[3];
-    System.out.println("Enter the name of the snack.");
-    String n = "name " + s.nextLine();
-    snack[0] = n;
-    System.out.println("Enter the amount of the snack.");
-    String a = "amount " + s.nextLine();
-    snack[1] = a;
-    System.out.println("Enter the price of the snack.");
-    String p = "price " + s.nextLine();
-    snack[2] = p;
-    setSnack(snack, currentRow, currentColumn);
-    System.out.printf("Snack added at row %c, column %d.\n", c, currentColumn + 1);
+    inventory[r][c] = new VendingSnack(n, a, p);
     if(currentColumn >= totalColumns-1) //Program goes through columns first before moving on to the next row
     {
         currentColumn = 0;
@@ -209,6 +155,26 @@ private void addSnack(){
     else{
         currentColumn++;
     }
+}
+/**
+ * SelectSnack Gives the user a prompt to add a snack
+ * 
+ */
+private void addSnack(){
+    char c = 'A';
+    c += currentRow;
+    String newName;
+    double newPrice;
+    int newAmount;
+    System.out.println("Enter the name of the snack.");
+    newName = s.nextLine();
+    System.out.println("Enter the amount of the snack.");
+    newAmount = Integer.parseInt(s.nextLine());
+    System.out.println("Enter the price of the snack.");
+    newPrice = Double.parseDouble(s.nextLine());
+    setSnack(newName, newPrice, newAmount, currentRow, currentColumn);
+    System.out.printf("Snack added at row %c, column %d.\n", c, currentColumn + 1);
+    
 }
 /**
  * SelectSnack Gives the user a prompt to purchase a snack
