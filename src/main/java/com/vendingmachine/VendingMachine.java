@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -27,6 +28,7 @@ class VendingMachine{
     StringBuffer sb;
     JSONObject jo;
     JSONParser jp;
+    JSONArray test;
     int totalRows, totalColumns;
     int currentRow, currentColumn;
     /**
@@ -83,40 +85,38 @@ private void mainMenu() throws IOException{
 private void readInput() throws IOException, ParseException{
     fr = new FileReader("src/Input/input.json");
     JSONObject config;
-    int rows;
+    Object o;
+    int rows = 0;
     int columns;
+
         jp = new JSONParser();
         jo = (JSONObject) jp.parse(fr);
         if(jo.containsKey("config") == true){
             config = (JSONObject) jo.get("config");
-            rows = (int) (config.get("rows"));
-            columns = (int) (config.get("columns"));
+            rows = Integer.parseInt(config.get("rows").toString());
+            columns = Integer.parseInt(config.get("columns").toString());
+            setRowsAndColumns(rows, columns);
         }
-        
+        if(jo.containsKey("items") == true){
+            test = (JSONArray) jo.get("items");
+            setMachine(test);
+        }
 }
 
 
  /**
      * setMachine creates VendingSnack objects from the given input
      */
-private void setMachine(){
+private void setMachine(JSONArray ja){
     boolean b = false;
-
-    if(sb.toString().contains("items") == true){
-        sb.delete(0, sb.indexOf("items"));
-        currentRow = 0; 
-        currentColumn = 0;
-
-    while(b == false){
-        if(sb.toString().contains("name") == true && sb.toString().contains("amount") == true 
-        && sb.toString().contains("price") == true){
-            String[] properties = new String[3];
-            properties[0] = sb.substring(sb.indexOf("name"), sb.indexOf("amount")); //represents the name
-            properties[1] = sb.substring(sb.indexOf("amount"), sb.indexOf("price")); //represents the amount
-            properties[2] = sb.substring(sb.indexOf("price"), sb.indexOf("}")); //represents the price
-            setSnack(properties,currentRow,currentColumn);
-
-            sb.delete(sb.indexOf("name"), sb.indexOf("}")+1); //allows the program to move on to the next snack
+    String name;
+    double price;
+    int amount;
+    for(int i = 0;i<ja.size();i++){
+        JSONObject jso = (JSONObject) ja.get(i);
+        name = jso.get("name").toString();
+        price = Double.parseDouble(jso.get("price").toString().replace("$", ""));
+        amount = Integer.parseInt(jso.get("amount").toString());
             if(currentColumn >= totalColumns-1) //Program goes through columns first before moving on to the next row
             {
                 currentColumn = 0;
@@ -126,34 +126,14 @@ private void setMachine(){
                 currentColumn++;
             }
         }
-        else{
-            b = true;
-        }
     }
-}
-}
 /**
      * setRowsAndColumns Takes the specified number of rows and columns and creates a 2D array
      * carrying the VendingSnack objects with them.
      */
-private void setRowsAndColumns(){
-    String s = sb.toString();
-
-    if (s.contains("rows") == true && s.contains("columns") == true){
-        String r = s.substring(s.indexOf("rows"), s.indexOf("columns")); 
-        r = r.replaceAll("rows", ""); r = r.replace(':', ' '); //Used to trim the string to get only the int value
-        r = r.replace(',', ' '); r = r.trim();
-
-        String c = s.substring(s.indexOf("columns"), s.indexOf("}"));
-        c = c.replaceAll("columns", "");
-        c = c.replace(':', ' '); c = c.replace(',', ' '); c = c.trim();
-
-        totalRows = Integer.parseInt(r);
-        totalColumns = Integer.parseInt(c);
-
+private void setRowsAndColumns(int r, int c){
         inventory = new VendingSnack[totalRows][totalColumns];
-        setRowLetters(Integer.parseInt(r));
-    }
+        setRowLetters(r);
 }
 /**
      * setMachine creates VendingSnack objects from the given input
