@@ -1,6 +1,7 @@
 # VendingMachine2
 
 Overview
+
 VendingMachine2 is an updated program developed in Visual Studio Code that acts as a vending machine with snacks. 
 It takes a JSON file as an input for the total number of rows and columns in the vending machine as well as the items that the machine will start with.
 The user can also create snacks based on if the size of the vending machine allows it. 
@@ -10,6 +11,7 @@ Previous Version Repository URL: https://github.com/nguyeale27/VendingMachine
 Maven Repository URL: https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1
 
 Approach
+
 The program first takes the JSON file and reads it using JSONParser to find the number of rows and columns as well as the starting items and builds a 2D array, where
 each element holds an object instance of VendingSnack to represent a snack. 
 After this process, the user is given a prompt to choose to add another snack, buy one from the existing list, or exit the program.
@@ -17,6 +19,7 @@ The program will record transactions in a txt file called "Transactions" in the 
 The transactions will not appear until the user exits the program.
 
 User Interaction
+
 When using the program, it is recommended to use Visual Studio Code to run the program and the JSON file should be named "input.json" and added to the "src/Input" file path.
 After starting the program, the user can either add another snack, purchase an existing one, or exit the program in the prompt given in the terminal.
 A user selects a particular item by giving a 2 character input, 
