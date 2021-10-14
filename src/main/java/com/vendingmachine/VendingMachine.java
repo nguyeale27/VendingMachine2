@@ -199,7 +199,7 @@ private void addSnack()
     System.out.println("Enter the price of the snack.");
     newPrice = Double.parseDouble(s.nextLine());
     setSnack(newName, newPrice, newAmount, currentRow, currentColumn);
-    System.out.printf("Snack added at row %c, column %d.\n", c, currentColumn + 1);
+    System.out.printf("Snack added at row %c, column %d.\n", c, currentColumn);
     
 }
 /**
