@@ -6,8 +6,11 @@ VendingMachine2 is an updated program developed in Visual Studio Code that acts 
 It takes a JSON file as an input for the total number of rows and columns in the vending machine as well as the items that the machine will start with.
 The user can also create snacks based on if the size of the vending machine allows it. 
 Reuses code from previous version of VendingMachine. Uses json.simple dependency from Maven Repository.
+
 Repository URL: https://github.com/nguyeale27/VendingMachine2
+
 Previous Version Repository URL: https://github.com/nguyeale27/VendingMachine
+
 Maven Repository URL: https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1
 
 Approach
