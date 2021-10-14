@@ -223,7 +223,7 @@ private void selectSnack() throws IOException
             calculatePayment(snack);
             done = true;
             }
-            catch (NullPointerException ex)
+            catch (Exception ex)
             {
                 System.out.println("Invalid combination.");
             }
