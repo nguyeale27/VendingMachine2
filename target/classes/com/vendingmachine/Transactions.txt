@@ -1,0 +1,1 @@
+Transaction: Hersheys purchased. Payment: $4.00. Total Change: $1.75. 

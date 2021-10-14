@@ -28,7 +28,6 @@ class VendingMachine{
     StringBuffer sb;
     JSONObject jo;
     JSONParser jp;
-    JSONArray test;
     int totalRows, totalColumns;
     int currentRow, currentColumn;
     /**
@@ -37,21 +36,14 @@ class VendingMachine{
      * @throws ParseException
      */
     public VendingMachine() throws IOException, ParseException{
-        record = new File("Transactions.txt");
+        record = new File("src/Records/Transactions.txt");
         readInput();
+        mainMenu();
     }
-public static void main (String[] args) throws IOException, ParseException{
-    VendingMachine vm = new VendingMachine();
-    //vm.mainMenu();
-}
 
 private void mainMenu() throws IOException{
-    try {
-        fw = new FileWriter(record);
-    } catch (IOException e) {
-        
-        e.printStackTrace();
-    }
+
+    fw = new FileWriter(record);
     boolean done = false;
     while (done == false){ //Allows the user to enter combinations until they are done
         System.out.println("Enter 'a' to add a snack. Enter 'p' to purchase a snack. Enter 0 to exit.");
@@ -85,21 +77,19 @@ private void mainMenu() throws IOException{
 private void readInput() throws IOException, ParseException{
     fr = new FileReader("src/Input/input.json");
     JSONObject config;
-    Object o;
-    int rows = 0;
-    int columns;
+    JSONArray items;
 
         jp = new JSONParser();
         jo = (JSONObject) jp.parse(fr);
         if(jo.containsKey("config") == true){
             config = (JSONObject) jo.get("config");
-            rows = Integer.parseInt(config.get("rows").toString());
-            columns = Integer.parseInt(config.get("columns").toString());
-            setRowsAndColumns(rows, columns);
+            totalRows = Integer.parseInt(config.get("rows").toString());
+            totalColumns = Integer.parseInt(config.get("columns").toString());
+            setRowsAndColumns(totalRows, totalColumns);
         }
         if(jo.containsKey("items") == true){
-            test = (JSONArray) jo.get("items");
-            setMachine(test);
+            items = (JSONArray) jo.get("items");
+            setMachine(items);
         }
 }
 
@@ -118,6 +108,7 @@ private void setMachine(JSONArray ja){
         amount = Integer.parseInt(jso.get("amount").toString());
         setSnack(name, price, amount, currentRow, currentColumn);
         }
+    
     }
 /**
      * setRowsAndColumns Takes the specified number of rows and columns and creates a 2D array
@@ -178,25 +169,20 @@ private void addSnack(){
 }
 /**
  * SelectSnack Gives the user a prompt to purchase a snack
+ * @throws IOException
  * 
  */
-private void selectSnack(){
+private void selectSnack() throws IOException{
     boolean done = false;
     while(done == false){
     System.out.println("Enter combination to select a snack. Example: A1 for the snack in the first row and first column. Enter 0 to cancel and go back to the menu.");
     String select = s.nextLine();
     if(select.length() == 2){
-        try{
-            
         int r = hm.get(select.charAt(0));
          int c = Character.getNumericValue(select.charAt(1)) - 1;
          VendingSnack snack = inventory[r][c];
          calculatePayment(snack);
          done = true;
-    }
-    catch(NullPointerException e){
-        System.out.printf("No snack found. Please try again.");
-    }
     
 }
     else if(select.equals("0")){ //Exits the method
@@ -214,8 +200,9 @@ private void selectSnack(){
      * 
      * @param row the selected row of the vending machine
      * @param column the selected column of the vending machine
+ * @throws IOException
      */
-public void calculatePayment(VendingSnack vs){
+public void calculatePayment(VendingSnack vs) throws IOException{
         
         if(vs.getAmount() > 0){//Checks to make sure that there is still a snack left to purchase
             double price = vs.getPrice();
@@ -230,7 +217,7 @@ public void calculatePayment(VendingSnack vs){
                 double payment = Double.parseDouble(s.nextLine());
                 if(payment >= price){ //If the entered payment covers the price
                     double change = payment - price;
-                    System.out.printf("Thank you. Your change is: %.2f.\n", change);
+                    System.out.printf("Thank you. Your change is: $%.2f.\n", change);
                     hasPaid = true;
                     recordTransaction(vs, price, payment, change);
                     vs.subtractAmount();
@@ -250,13 +237,9 @@ else{ //if the snack has run out
      * @param row the selected row of the vending machine
      * @param column the selected column of the vending machine
      */
-private void recordTransaction(VendingSnack vs, double price, double payment, double change){
-    try {
+private void recordTransaction(VendingSnack vs, double price, double payment, double change) throws IOException{
         String name = vs.getName();
         String s = String.format("Transaction: %s purchased. Payment: $%.2f. Total Change: $%.2f. \n", name, payment, change);
         fw.append(s);
-    } catch (IOException e) {
-        System.out.println("Error with FileWriter.");
-    }
 }
 }

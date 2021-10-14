@@ -1,0 +1,2 @@
+Transaction: Nutrageous purchased. Payment: $2.00. Total Change: $0.70. 
+Transaction: Baby Ruth purchased. Payment: $4.00. Total Change: $1.50. 
