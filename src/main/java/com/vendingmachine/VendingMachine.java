@@ -216,12 +216,17 @@ private void selectSnack() throws IOException
     String select = s.nextLine();
         if(select.length() == 2)
         {
+            try{
             int r = hm.get(select.charAt(0));
             int c = Character.getNumericValue(select.charAt(1)) - 1;
             VendingSnack snack = inventory[r][c];
             calculatePayment(snack);
             done = true;
-    
+            }
+            catch (NullPointerException ex)
+            {
+                System.out.println("Invalid combination.");
+            }
         }
 
         else if(select.equals("0"))//Exits the method
